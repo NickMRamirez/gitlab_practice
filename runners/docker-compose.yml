@@ -1,0 +1,47 @@
+version: "3"
+services:
+
+  dockerrunner:
+    image: gitlab/gitlab-runner
+    environment:
+      RUNNER_NAME: 'dockerrunner1'
+      REGISTRATION_TOKEN: 'abc123'
+      CI_SERVER_URL: 'http://192.168.50.3/'
+      RUNNER_EXECUTOR: 'docker'
+      DOCKER_IMAGE: 'microsoft/dotnet'
+      DOCKER_PRIVILEGED: 'true'
+      RUNNER_TAG_LIST: 'docker'
+      REGISTER_LOCKED: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: '/bin/bash -c'
+    command: '"gitlab-runner register --non-interactive && gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner"'
+
+  shellrunner:
+    image: gitlab/gitlab-runner
+    environment:
+      RUNNER_NAME: 'shellrunner1'
+      REGISTRATION_TOKEN: abc123
+      CI_SERVER_URL: 'http://192.168.50.3/'
+      RUNNER_EXECUTOR: shell
+      RUNNER_SHELL: bash
+      DOCKER_PRIVILEGED: 'true'
+      RUNNER_TAG_LIST: 'shell'
+      REGISTER_LOCKED: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/docker/docker:/usr/bin/docker:ro
+    entrypoint: '/bin/bash -c'
+    command: '"chmod o+w /var/run/docker.sock && gitlab-runner register --non-interactive && gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner"'
+
+
+
+        #   entrypoint: >
+      # /bin/bash -c "
+      # if [ -f /tmp/runner.txt ]; then 
+      #   echo gitlab-runner register --non-interactive && 
+      #   echo gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner &&
+      #   echo touch /tmp/runner.txt
+      # else 
+      #   echo 'gitlab already set up'
+      # fi"

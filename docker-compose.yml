@@ -1,0 +1,12 @@
+version: "3"
+services:
+
+  gitlab:
+    image: gitlab/gitlab-ce
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "external_url 'http://192.168.50.3/'"
+      GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: abc123
+  
