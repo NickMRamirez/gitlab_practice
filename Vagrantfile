@@ -26,11 +26,15 @@ Vagrant.configure("2") do |config|
   }
 
   install_dotnet_cli = %Q{
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main" > /etc/apt/sources.list.d/dotnetdev.list'
-    sudo apt update
-    sudo apt install dotnet-sdk-2.0.0 -y
+    if [ ! $(which dotnet) ]; then
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+      sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main" > /etc/apt/sources.list.d/dotnetdev.list'
+      sudo apt update
+      sudo apt install dotnet-sdk-2.0.0 -y
+     else
+      echo "dotnet already installed."
+    fi
   }
 
   config.vm.define "host1" do |node|
