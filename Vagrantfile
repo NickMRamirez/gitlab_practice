@@ -25,6 +25,18 @@ Vagrant.configure("2") do |config|
     fi
   }
 
+  install_dotnet_cli = %Q{
+    if [ ! $(which dotnet) ]; then
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+      sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main" > /etc/apt/sources.list.d/dotnetdev.list'
+      sudo apt update
+      sudo apt install dotnet-sdk-2.0.0 -y
+     else
+      echo "dotnet already installed."
+    fi
+  }
+
   config.vm.define "host1" do |node|
     node.vm.box = "silverhighway/zesty64"
     node.vm.hostname = "host1"
@@ -36,6 +48,7 @@ Vagrant.configure("2") do |config|
     node.vm.provision "shell", inline: "sudo apt purge apache2 -y"
     node.vm.provision "shell", inline: install_docker
     node.vm.provision "shell", inline: download_docker_binaries
+    node.vm.provision "shell", inline: install_dotnet_cli
   end
 
 end
