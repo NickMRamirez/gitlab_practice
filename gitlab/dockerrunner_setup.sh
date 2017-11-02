@@ -1,3 +1,6 @@
+# Wait for Gitlab server to become available...
+/wait-for-it.sh $CI_SERVER_URL --timeout=600
+
 gitlab-runner unregister --name $RUNNER_NAME 2>/dev/null
 gitlab-runner register --non-interactive
 gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner

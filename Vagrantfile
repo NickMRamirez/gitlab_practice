@@ -25,6 +25,9 @@ Vagrant.configure("2") do |config|
     fi
   }
 
+  # Set this to false if you don't want to install .NET Core on the VM
+  should_install_dotnet_cli = true
+
   install_dotnet_cli = %Q{
     if [ ! $(which dotnet) ]; then
       curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
@@ -48,7 +51,7 @@ Vagrant.configure("2") do |config|
     node.vm.provision "shell", inline: "sudo apt purge apache2 -y"
     node.vm.provision "shell", inline: install_docker
     node.vm.provision "shell", inline: download_docker_binaries
-    node.vm.provision "shell", inline: install_dotnet_cli
+    node.vm.provision "shell", inline: install_dotnet_cli if should_install_dotnet_cli
   end
 
 end
