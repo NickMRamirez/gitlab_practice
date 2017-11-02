@@ -14,8 +14,9 @@ services:
       REGISTER_LOCKED: 'false'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    entrypoint: '/bin/bash -c'
-    command: '"gitlab-runner register --non-interactive && gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner"'
+      - /vagrant/runners/shellrunner_setup.sh:/setup.sh
+    entrypoint: '/bin/bash'
+    command: '/setup.sh'
 
   shellrunner:
     image: gitlab/gitlab-runner
@@ -31,17 +32,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/docker/docker:/usr/bin/docker:ro
-    entrypoint: '/bin/bash -c'
-    command: '"chmod o+w /var/run/docker.sock && gitlab-runner register --non-interactive && gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner"'
-
-
-
-        #   entrypoint: >
-      # /bin/bash -c "
-      # if [ -f /tmp/runner.txt ]; then 
-      #   echo gitlab-runner register --non-interactive && 
-      #   echo gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner &&
-      #   echo touch /tmp/runner.txt
-      # else 
-      #   echo 'gitlab already set up'
-      # fi"
+      - /vagrant/runners/shellrunner_setup.sh:/setup.sh
+    entrypoint: '/bin/bash'
+    command: '/setup.sh'

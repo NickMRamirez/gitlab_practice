@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
       vb.customize ['modifyvm', :id, '--memory', '3072']
     end
 
-    node.vm.provision "shell", inline: "sudo update-rc.d -f apache2 remove && sudo systemctl stop apache2"
+    node.vm.provision "shell", inline: "sudo apt purge apache2 -y"
     node.vm.provision "shell", inline: install_docker
     node.vm.provision "shell", inline: download_docker_binaries
   end
