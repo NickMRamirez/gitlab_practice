@@ -26,13 +26,13 @@ Vagrant.configure("2") do |config|
   }
 
   # Set this to false if you don't want to install .NET Core on the VM
-  should_install_dotnet_cli = true
+  should_install_dotnet_cli = false
 
   install_dotnet_cli = %Q{
     if [ ! $(which dotnet) ]; then
       curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
       sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-      sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main" > /etc/apt/sources.list.d/dotnetdev.list'
+      sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main" > /etc/apt/sources.list.d/dotnetdev.list'
       sudo apt update
       sudo apt install dotnet-sdk-2.0.0 -y
      else
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
   }
 
   config.vm.define "host1" do |node|
-    node.vm.box = "silverhighway/zesty64"
+    node.vm.box = "ubuntu/xenial64"
     node.vm.hostname = "host1"
     node.vm.network "private_network", ip: "192.168.50.3"
     node.vm.provider :virtualbox do |vb|

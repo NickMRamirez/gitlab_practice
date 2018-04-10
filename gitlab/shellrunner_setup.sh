@@ -1,5 +1,8 @@
 # Wait for Gitlab server to become available...
-/wait-for-it.sh $CI_SERVER_URL --timeout=600
+until $(curl --output /dev/null --silent --head --fail $CI_SERVER_URL ); do
+    printf '.'
+    sleep 5
+done
 
 chmod o+w /var/run/docker.sock
 gitlab-runner unregister --name $RUNNER_NAME 2>/dev/null
