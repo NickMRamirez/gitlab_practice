@@ -1,6 +1,7 @@
 stages:
   - build
   - package
+  - deploy
 
 build:
   stage: build
@@ -23,5 +24,16 @@ package:
     - build
   script:
     - docker build -t nramirez/ectoplasm .
+  tags:
+    - shell
+
+deploy:
+  stage: deploy
+  script: 
+    - echo "Deploying to test"
+  environment:
+    name: test
+  only: 
+    - master
   tags:
     - shell

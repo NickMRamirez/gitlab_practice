@@ -10,25 +10,24 @@ services:
       GITLAB_OMNIBUS_CONFIG: "external_url 'http://192.168.50.3/'"
       GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: abc123
 
-  # dockerrunner:
-  #   depends_on:
-  #     - gitlab
-  #   image: gitlab/gitlab-runner
-  #   environment:
-  #     RUNNER_NAME: 'dockerrunner1'
-  #     REGISTRATION_TOKEN: 'abc123'
-  #     CI_SERVER_URL: 'http://192.168.50.3/'
-  #     RUNNER_EXECUTOR: 'docker'
-  #     DOCKER_IMAGE: 'microsoft/dotnet'
-  #     DOCKER_PRIVILEGED: 'true'
-  #     RUNNER_TAG_LIST: 'docker'
-  #     REGISTER_LOCKED: 'false'
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /vagrant/runners/shellrunner_setup.sh:/setup.sh
-  #     - /vagrant/runners/wait-for-it.sh:/wait-for-it.sh
-  #   entrypoint: '/bin/bash'
-  #   command: '/setup.sh'
+  dockerrunner:
+    depends_on:
+      - gitlab
+    image: gitlab/gitlab-runner
+    environment:
+      RUNNER_NAME: 'dockerrunner1'
+      REGISTRATION_TOKEN: 'abc123'
+      CI_SERVER_URL: 'http://192.168.50.3/'
+      RUNNER_EXECUTOR: 'docker'
+      DOCKER_IMAGE: 'microsoft/dotnet'
+      DOCKER_PRIVILEGED: 'true'
+      RUNNER_TAG_LIST: 'docker'
+      REGISTER_LOCKED: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /vagrant/gitlab/shellrunner_setup.sh:/setup.sh
+    entrypoint: '/bin/bash'
+    command: '/setup.sh'
 
   shellrunner:
     depends_on:
@@ -47,6 +46,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/docker/docker:/usr/bin/docker:ro
       - /vagrant/gitlab/shellrunner_setup.sh:/setup.sh
-      - /vagrant/gitlab/wait-for-it.sh:/wait-for-it.sh
     entrypoint: '/bin/bash'
     command: '/setup.sh'

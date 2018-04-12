@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
     node.vm.hostname = "host1"
     node.vm.network "private_network", ip: "192.168.50.3"
     node.vm.provider :virtualbox do |vb|
-      vb.customize ['modifyvm', :id, '--memory', '3072']
+      vb.customize ['modifyvm', :id, '--memory', '5120']
     end
 
     node.vm.provision "shell", inline: "sudo apt purge apache2 -y"

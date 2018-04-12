@@ -17,7 +17,7 @@ namespace ectoplasm.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "We are the company.";
 
             return View();
         }
